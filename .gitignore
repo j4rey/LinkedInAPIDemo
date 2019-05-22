@@ -1,0 +1,10 @@
+packages/**
+.vs/**
+*.[Bb]in/*
+*.[Oo]bj*/
+*.[Pp]roperties*/
+[Dd]ebug*/
+[Rr]elease*/
+bin/
+properties/
+content/
