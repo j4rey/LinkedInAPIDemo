@@ -10,14 +10,28 @@ namespace LinkedInLibrary
     public class BaseRequest
     {
         public static void Get<TSuccess, TError>(string url, string accesstoken, Func<TSuccess, object> onRequestSuccess, Func<TError, object> handleErrorResponse,
-            Func<Exception, object> handleException=null)
+            Func<Exception, object> handleException=null,
+            bool defaultHeaders = true,
+           List<NameValuePair> additionalHeaders = default(List<NameValuePair>))
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accesstoken);
-                    client.DefaultRequestHeaders.Add("X-Restli-Protocol-Version", "2.0.0");
+                    //set additional headers
+                    if (defaultHeaders)
+                    {
+                        client.DefaultRequestHeaders.Add("X-Restli-Protocol-Version", "2.0.0");
+                    }
+
+                    if (additionalHeaders != null)
+                    {
+                        foreach (NameValuePair kvp in additionalHeaders)
+                        {
+                            client.DefaultRequestHeaders.Add(kvp.name, kvp.value);
+                        }
+                    }
                     HttpResponseMessage response = client.GetAsync(url).Result;
                     if (response.IsSuccessStatusCode)
                     {

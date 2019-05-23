@@ -4,18 +4,26 @@ using System.Web.UI;
 using System.Net.Http;
 using Newtonsoft.Json;
 using LinkedInLibrary.Models;
+using System.Configuration;
 
 namespace LinkedInAPICall
 {
     public partial class linkedinaccts : Page
     {
-        const string CLIENTID = "";
-        const string CLIENTSECRET = "";
-        const string REDIRECTURL = "http://localhost:1862/linkedinaccts.aspx";
-        
+        readonly string CLIENTID = "";
+        readonly string CLIENTSECRET = "";
+        readonly string REDIRECTURL = "http://localhost:1862/linkedinaccts.aspx";
+
+        public linkedinaccts()
+        {
+            CLIENTID = ConfigurationManager.AppSettings["clientid"];
+            CLIENTSECRET = ConfigurationManager.AppSettings["clientsecret"];
+        }
+
         string currentState = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!Page.IsPostBack)
             {
                 if(Request.QueryString["error"] != null)
